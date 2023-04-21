@@ -3,6 +3,7 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import JwtAuthenticationGuard from 'src/authentication/strategies/jwtAuthentication.guard';
+import FindOneParams from 'src/utils/findOneParams';
 
 @Controller('courses')
 export class CourseController {
@@ -20,7 +21,7 @@ export class CourseController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param() { id }: FindOneParams) {
     return this.courseService.findOne(id);
   }
 
