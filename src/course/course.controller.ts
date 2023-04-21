@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import JwtAuthenticationGuard from 'src/authentication/strategies/jwtAuthentication.guard';
 
 @Controller('course')
 export class CourseController {
   constructor(private readonly courseService: CourseService) { }
 
   @Post()
-  create(@Body() createCourseDto: CreateCourseDto) {
+  @UseGuards(JwtAuthenticationGuard)
+  async create(@Body() createCourseDto: CreateCourseDto) {
     return this.courseService.createCourse(createCourseDto);
   }
 
