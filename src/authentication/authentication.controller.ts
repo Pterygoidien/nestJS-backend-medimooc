@@ -3,8 +3,8 @@ import { Response } from "express";
 import { AuthenticationService } from "./authentication.service";
 import RegisterDto from "./dto/register.dto";
 import RequestWithUser from "./interface/requestWithUser.interface";
-import { LocalAuthenticationGuard } from "./strategies/localAuthentication.guard";
-import JwtAuthenticationGuard from "./strategies/jwtAuthentication.guard";
+import { LocalAuthenticationGuard } from "./guard/localAuthentication.guard";
+import JwtAuthenticationGuard from "./guard/jwtAuthentication.guard";
 
 @Controller('auth')
 export class AuthenticationController {

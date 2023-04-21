@@ -5,20 +5,24 @@ import { DatabaseModule } from './database/database.module';
 import { CourseModule } from './course/course.module';
 import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { validate } from './env.validation';
+import databaseConfig from './config/database.config';
+import typeormConfig from './config/typeorm.config';
+import jwtConfig from './config/jwt.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        POSTGRES_HOST: Joi.string().required(),
-        POSTGRES_PORT: Joi.number().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
-        PORT: Joi.number().required(),
-        JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRATION_TIME: Joi.string().required(),
-      })
+      isGlobal: true,
+      cache: true,
+      expandVariables: true,
+      validate,
+      load: [
+        databaseConfig,
+        typeormConfig,
+        jwtConfig
+      ]
+
     }),
     DatabaseModule,
     CourseModule,

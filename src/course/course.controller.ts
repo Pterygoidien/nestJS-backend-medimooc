@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import JwtAuthenticationGuard from 'src/authentication/strategies/jwtAuthentication.guard';
+import JwtAuthenticationGuard from 'src/authentication/guard/jwtAuthentication.guard';
 import FindOneParams from 'src/utils/findOneParams';
 
 @Controller('courses')
