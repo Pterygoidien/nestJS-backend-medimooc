@@ -9,6 +9,7 @@ import { validate } from './env.validation';
 import databaseConfig from './config/database.config';
 import typeormConfig from './config/typeorm.config';
 import jwtConfig from './config/jwt.config';
+import elasticSearchConfig from './config/elastic-search.config';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import jwtConfig from './config/jwt.config';
       load: [
         databaseConfig,
         typeormConfig,
-        jwtConfig
+        jwtConfig,
+        elasticSearchConfig
       ]
 
     }),

@@ -1,5 +1,6 @@
 import { Entity } from "typeorm";
 import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Exclude } from 'class-transformer';
 
 @Entity()
 class User {
@@ -10,6 +11,7 @@ class User {
     public email: string;
 
     @Column()
+    @Exclude()
     public password: string;
 }
 export default User;
