@@ -5,7 +5,7 @@ import { UpdateCourseDto } from './dto/update-course.dto';
 import JwtAuthenticationGuard from 'src/authentication/guard/jwtAuthentication.guard';
 import FindOneParams from 'src/utils/findOneParams';
 
-@Controller('courses-old')
+@Controller('courses')
 export class CourseController {
   constructor(private readonly courseService: CourseService) { }
 

@@ -9,4 +9,4 @@ import Course from './entities/course.entity';
   controllers: [CourseController],
   providers: [CourseService]
 })
-export class CourseModuleOld { }
+export class CourseModule { }
