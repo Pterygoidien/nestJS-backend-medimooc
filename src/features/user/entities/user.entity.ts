@@ -13,5 +13,10 @@ class User {
     @Column()
     @Exclude()
     public password: string;
+
+    @Column({ nullable: true })
+    @Exclude()
+    public currentHashedRefreshToken?: string;
+
 }
 export default User;

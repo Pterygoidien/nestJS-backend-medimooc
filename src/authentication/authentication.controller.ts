@@ -5,11 +5,13 @@ import RegisterDto from "./dto/register.dto";
 import RequestWithUser from "./interface/requestWithUser.interface";
 import { LocalAuthenticationGuard } from "./guard/localAuthentication.guard";
 import JwtAuthenticationGuard from "./guard/jwtAuthentication.guard";
+import { UserService } from "src/features/user/user.service";
 
 @Controller('auth')
 export class AuthenticationController {
     constructor(
-        private readonly authenticationService: AuthenticationService
+        private readonly authenticationService: AuthenticationService,
+        private readonly userService: UserService
     ) { }
 
     @Post('register')
@@ -20,12 +22,18 @@ export class AuthenticationController {
     @HttpCode(200)
     @UseGuards(LocalAuthenticationGuard)
     @Post('login')
-    async login(@Request() req: RequestWithUser, @Res() res: Response) {
+    async login(@Request() req: RequestWithUser) {
         const { user } = req;
-        const cookie = this.authenticationService.getCookieWithJwtToken(user.id);
-        res.setHeader('Set-Cookie', cookie);
-        user.password = undefined;
-        return res.send(user);
+        const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(user.id);
+        const {
+            cookie: refreshTokenCookie,
+            token: refreshToken,
+        } = this.authenticationService.getCookieWithJwtRefreshToken(user.id);
+
+        await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+
+        req.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+        return user;
     }
 
     @HttpCode(200)

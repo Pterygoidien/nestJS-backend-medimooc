@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import JwtAuthenticationGuard from 'src/authentication/guard/jwtAuthentication.guard';
 import FindOneParams from 'src/utils/findOneParams';
+import { PaginationWithStartIdDto } from 'src/utils/dto/pagination-with-start-id.dto';
 
 @Controller('courses')
 export class CourseController {
@@ -17,6 +18,12 @@ export class CourseController {
 
   @Get()
   findAll() {
+    return this.courseService.findAll();
+  }
+
+  @Get('search')
+  async getCourses(@Query('query') query: string, @Query() { offset, limit, startId }: PaginationWithStartIdDto) {
+    if (query) return this.courseService.searchForCourses(query, offset, limit, startId);
     return this.courseService.findAll();
   }
 

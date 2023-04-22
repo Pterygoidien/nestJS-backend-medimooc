@@ -70,4 +70,14 @@ export class CourseSearchService {
         const results = hits.hits.map((hit) => hit._source);
         return { count, results };
     }
+    async remove(courseId: string) {
+        this.elasticSearchService.deleteByQuery({
+            index: this.index,
+            query: {
+                match: {
+                    id: courseId,
+                },
+            },
+        });
+    }
 }
