@@ -1,4 +1,4 @@
-import { Body, Get, Controller, Post, UseGuards, Request, HttpCode, Res, Req } from "@nestjs/common";
+import { Body, Get, Controller, Post, UseGuards, Request, HttpCode, Res, Req, UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common";
 import { Response } from "express";
 import { AuthenticationService } from "./authentication.service";
 import RegisterDto from "./dto/register.dto";
@@ -8,6 +8,7 @@ import JwtAuthenticationGuard from "./guard/jwtAuthentication.guard";
 import { UserService } from "src/features/user/user.service";
 
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
     constructor(
         private readonly authenticationService: AuthenticationService,
