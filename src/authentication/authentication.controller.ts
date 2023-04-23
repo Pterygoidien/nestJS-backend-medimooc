@@ -3,9 +3,10 @@ import { Response } from "express";
 import { AuthenticationService } from "./authentication.service";
 import RegisterDto from "./dto/register.dto";
 import RequestWithUser from "./interface/requestWithUser.interface";
-import { LocalAuthenticationGuard } from "./guard/localAuthentication.guard";
-import JwtAuthenticationGuard from "./guard/jwtAuthentication.guard";
+import { LocalAuthenticationGuard } from "./guard/local-authentication.guard";
+import JwtAuthenticationGuard from "./guard/jwt-authentication.guard";
 import { UserService } from "src/features/user/user.service";
+import { JwtRefreshGuard } from "./guard/jwt-refresh.guard";
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -40,6 +41,7 @@ export class AuthenticationController {
     @HttpCode(200)
     @Post('logout')
     async logout(@Req() request: RequestWithUser, @Res() response: Response) {
+        await this.userService.removeRefreshToken(request.user.id);
         response.setHeader('Set-Cookie', this.authenticationService.getCookieForLogOut());
         return response.sendStatus(200);
     }
@@ -48,7 +50,14 @@ export class AuthenticationController {
     @Get()
     authenticate(@Request() req: RequestWithUser) {
         const user = req.user;
-        user.password = undefined;
         return user;
+    }
+
+    @UseGuards(JwtRefreshGuard)
+    @Get('refresh')
+    async refresh(@Request() req: RequestWithUser) {
+        const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(req.user.id);
+        req.res.setHeader('Set-Cookie', accessTokenCookie);
+        return req.user;
     }
 }
