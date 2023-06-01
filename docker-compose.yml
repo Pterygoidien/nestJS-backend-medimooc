@@ -12,6 +12,7 @@ services:
     networks:
       - postgres
 
+
   pgadmin:
     links:
       - postgres:postgres

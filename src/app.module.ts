@@ -11,6 +11,8 @@ import elasticSearchConfig from './config/elastic-search.config';
 import { CourseModule } from './features/learn/course/course.module';
 import { SearchModule } from './features/search/search.module';
 import { UserModule } from './features/user/user.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { UserModule } from './features/user/user.module';
         elasticSearchConfig
       ]
     }),
+
     DatabaseModule,
     CourseModule,
     UserModule,
